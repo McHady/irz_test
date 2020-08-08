@@ -1,7 +1,9 @@
-#include "stdio.h"
+#ifndef __PROBLEM_H
+#define __PROBLEM_H
+
 #include "sp_pnt.h"
+
 struct {
-     void (*EXCEPTION_CALLBACK) (int) = default_exception_callback;
      const Point ORIGIN_POINT = Point {0, 0, 0};
      int POINT_NUMBER = 4;
      int SPHERE_RADIUS;
@@ -13,6 +15,4 @@ struct {
 
 void problem_solution();
 
-void default_exception_callback(int stage) {    
-    printf("error on %d", stage);
-}
+#endif

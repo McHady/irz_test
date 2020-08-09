@@ -7,10 +7,10 @@ struct {
      const Point ORIGIN_POINT;
      int POINT_NUMBER;
      int SPHERE_RADIUS;
-     int * (*SATTELLITE_DISTANCE_PRODUCER) (int);
-     void (*POINT_INPUT_CALLBACK)(int, int *, int *, int *);
-     void (*LOGGER)(char *);
-     void (*RESULT_CALLBACK)(int, int, int);
+     int * (*satellite_distance_producer) (int);
+     void (*point_input_callback)(int, int *, int *, int *);
+     void (*logger)(char *);
+     void (*result_callback)(int, int, int);
 } PROBLEM_INIT = {{0, 0, 0}, 4, 10, NULL, NULL, NULL, NULL};
 
 void problem_solution();

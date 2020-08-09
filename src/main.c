@@ -11,12 +11,13 @@ int MAX_DISTANCE = 100;
 
 int main(void) {
 
-    PROBLEM_INIT.POINT_INPUT_CALLBACK = __point_input;
-    PROBLEM_INIT.RESULT_CALLBACK = __result_callback;
-    PROBLEM_INIT.SATTELLITE_DISTANCE_PRODUCER = __sattelite_distanses;
-    PROBLEM_INIT.LOGGER = __log;
+    PROBLEM_INIT.point_input_callback = __point_input;
+    PROBLEM_INIT.result_callback = __result_callback;
+    PROBLEM_INIT.satellite_distance_producer = __sattelite_distanses;
+    PROBLEM_INIT.logger = __log;
 
     problem_solution();
+    return 0;
 }
 
 void __point_input(int i, int * x, int * y, int * z) {

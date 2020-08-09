@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include "stdio.h"
 #include "problem.h"
 #include "time.h" 
 
@@ -42,7 +42,8 @@ int * __sattelite_distanses(int number) {
 }
 
 void __log(char * message){
-    time_t now = time(0);
-    printf("log %s: %s\n", ctime(now), message);    
+    time_t now;
+    time(&now);
+    printf("log %s: %s\n", ctime(&now), message);    
     free(message);
 }

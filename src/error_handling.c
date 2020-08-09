@@ -1,7 +1,7 @@
 #include "stdio.h"
 #include "error_handling.h"
 
-void __default_exception_callback(char * message);
+void __default_exception_callback(char *);
 void __initialize();
 
 void build_exception(struct exception* ex, char * message, void (* callback)(char *)) {

@@ -1,5 +1,6 @@
 #ifndef __SP_PNT_H
 #define __SP_PNT_H
+#include "stdlib.h"
 typedef struct {
     int x; 
     int y; 
@@ -8,7 +9,7 @@ typedef struct {
 
 void build_point(Point *, int, int, int);
 
-Point * produce_points(int, void (int *, int *, int *));
+Point * produce_points(int, void (int, int *, int *, int *));
 
 void expose_point(Point, void (int, int, int)); 
 

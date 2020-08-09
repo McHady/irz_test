@@ -2,6 +2,7 @@
 #include "error_handling.h"
 
 void __default_exception_callback(char * message);
+void __initialize();
 
 void build_exception(struct exception* ex, char * message, void (* callback)(char *)) {
     ex->callback = callback;
@@ -13,6 +14,7 @@ void build_def_exception(struct exception * ex, char * message) {
 }
 
 void throw_exc(struct exception * ex) {
+    __initialize();
     ex->callback(ex->message);
 }
 
@@ -21,15 +23,24 @@ void throw_def_exc() {
 }
 
 void __default_exception_callback(char * message){
-    printf("Exception %s has been trown", message);
+    printf("\nException %s has been trown\n", message);
 }
 
-#ifndef __ERROR_HANDLING_INIT
-#define __ERROR_HANDLING_INIT
+
 
 void __initialize() {
+#ifndef __ERROR_HANDLING_INIT
+#define __ERROR_HANDLING_INIT
     build_def_exception(&NULL_POINTER_EX, "NULL POINTER");
     build_def_exception(&DEFAULT_EX, "DEFAULT");
+    
+#endif
 }
 
-#endif
+int main(void){
+    throw_def_exc();
+    throw_exc(&NULL_POINTER_EX);
+    struct exception ex;
+    build_def_exception(&ex, "custom exception");
+    throw_exc(&ex);
+}

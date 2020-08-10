@@ -8,7 +8,7 @@ char * str_format(char * format, int result_size, ...) {
     va_list args;
     va_start(args, result_size);
     char * buffer = calloc(result_size, sizeof(char));
-    snprintf(buffer, result_size, format, args);
+    vsnprintf(buffer, result_size, format, args);
     va_end(args);
     return buffer;
 }

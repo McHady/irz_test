@@ -65,9 +65,6 @@ void __log_distances(int * distances, int number) {
 }
 
 void __log_point_preinit() {
-    /*char * format = "Known points initialization %d";
-    int fsSize = 30;
-    char * buffer = str_format(format, fsSize, PROBLEM_INIT.POINT_NUMBER); */
     PROBLEM_INIT.format_logger("Known %d points initialization", PROBLEM_INIT.POINT_NUMBER);
 }
 
@@ -93,10 +90,12 @@ int __find_coordiante(char coord, int * distances, Point * points) {
         case 'y':
             formula_str = Y_FORMULA_STR;
             formula = Y_formula;
+            break;
         
         case 'z':
             formula_str = Z_FORMULA_STR;
             formula = Z_formula;
+            break;
 
         default:
             throw_def_exc();
@@ -104,7 +103,7 @@ int __find_coordiante(char coord, int * distances, Point * points) {
             break;
     }
 
-    PROBLEM_INIT.format_logger("Found %s about the formula: %s", coord, formula_str);
+    PROBLEM_INIT.format_logger("Found %c about the formula: %s", coord, formula_str);
     return formula(distances, points);
 }
 

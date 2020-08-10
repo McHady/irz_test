@@ -107,13 +107,17 @@ int __find_coordiante(char coord, int * distances, Point * points) {
     return formula(distances, points);
 }
 
+///формула нахождения X(t)
 int X_formula(int * distances, Point * points) {
     return 0;
 }
 
+///формула нахождения Y(t)
 int Y_formula(int * distances, Point * points) {
     return 0;
 }
+
+///формула нахождения Z(t)
 int Z_formula(int * distances, Point * points) {
     return 0;
 }

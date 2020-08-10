@@ -2,6 +2,7 @@
 #include "error_handling.h"
 #include "sp_pnt.h"
 #include "str_utils.h"
+#include "stdio.h"
 
 #define false = 0;
 #define true = 1;
@@ -22,7 +23,8 @@ void problem_solution() {
 void __init_defaults() {
     Point orgn = {0, 0, 0};
     if (&PROBLEM_INIT.ORIGIN_POINT == NULL) PROBLEM_INIT.ORIGIN_POINT = orgn;
-    if (&PROBLEM_INIT.POINT_NUMBER == NULL) PROBLEM_INIT.POINT_NUMBER = 4;
+    int num = 4;
+    if (PROBLEM_INIT.POINT_NUMBER == 0) PROBLEM_INIT.POINT_NUMBER = num;
 }
 
 int __is_problem_inited(){
@@ -51,22 +53,27 @@ void __problem_solution() {
 }
 
 void __log_distances(int * distances, int number) {
-    char * joint_distances = join_int_arr_with_commas(distances, number);
+    /* char * joint_distances = join_int_arr_with_commas(distances, number); */
     PROBLEM_INIT.logger("Point distances: ");
-    PROBLEM_INIT.logger(joint_distances);
-    free(joint_distances);
+    /* PROBLEM_INIT.logger(joint_distances); */
+    printf("ρ[%d]=%d", 1, distances[0]);
+    for(int i = 1; i < number; i++) {
+        printf(", ρ[%d]=%d", i+1, distances[i]);
+    }
+    printf("\n");
+    /*free(joint_distances);*/
 }
 
 void __log_point_preinit() {
-    char * format = "Known points initialization %d";
+    /*char * format = "Known points initialization %d";
     int fsSize = 30;
-    char * buffer = str_format(format, fsSize, PROBLEM_INIT.POINT_NUMBER);
-    PROBLEM_INIT.logger(buffer);
+    char * buffer = str_format(format, fsSize, PROBLEM_INIT.POINT_NUMBER); */
+    PROBLEM_INIT.format_logger("Known %d points initialization", PROBLEM_INIT.POINT_NUMBER);
 }
 
-char * X_FORMULA = "";
-char * Y_FORMULA = "";
-char * Z_FORMULA = "";
+char * X_FORMULA_STR = "x(t)";
+char * Y_FORMULA_STR = "y(t)";
+char * Z_FORMULA_STR = "z(t)";
 
 int X_formula(int * distances, Point * points);
 int Y_formula(int * distances, Point * points);
@@ -79,16 +86,16 @@ int __find_coordiante(char coord, int * distances, Point * points) {
     switch (coord)
     {
         case 'x':
-            formula_str = X_FORMULA;
+            formula_str = X_FORMULA_STR;
             formula = X_formula;
             break;
         
-        case 'Y':
-            formula_str = Y_FORMULA;
+        case 'y':
+            formula_str = Y_FORMULA_STR;
             formula = Y_formula;
         
-        case 'Z':
-            formula_str = Z_FORMULA;
+        case 'z':
+            formula_str = Z_FORMULA_STR;
             formula = Z_formula;
 
         default:
@@ -97,8 +104,7 @@ int __find_coordiante(char coord, int * distances, Point * points) {
             break;
     }
 
-    char * message = str_format("Found %s about the formula: %s", 60, coord, formula_str);
-    PROBLEM_INIT.logger(message);
+    PROBLEM_INIT.format_logger("Found %s about the formula: %s", coord, formula_str);
     return formula(distances, points);
 }
 

@@ -8,6 +8,7 @@ struct {
      int * (*satellite_distance_producer) (int);
      void (*point_input_callback)(int, int *, int *, int *);
      void (*logger)(char *);
+     void (*format_logger) (char *, ...);
      void (*result_callback)(int, int, int);
 } PROBLEM_INIT;
 

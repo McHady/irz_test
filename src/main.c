@@ -1,6 +1,7 @@
 #include "stdio.h"
 #include "problem.h"
 #include "time.h" 
+#include "str_utils.h"
 
 void __point_input(int, int *, int *, int *);
 void __result_callback(int, int, int);
@@ -10,7 +11,9 @@ void __log(char *);
 int MAX_DISTANCE = 100;
 
 int main(void) {
+    STR_INIT.MAX_DIGIT_NUMBER = 5;
 
+    PROBLEM_INIT.SPHERE_RADIUS = 10;
     PROBLEM_INIT.point_input_callback = __point_input;
     PROBLEM_INIT.result_callback = __result_callback;
     PROBLEM_INIT.satellite_distance_producer = __sattelite_distanses;
@@ -27,7 +30,7 @@ void __point_input(int i, int * x, int * y, int * z) {
 
 
 void __result_callback(int x, int y, int z) {
-    printf("\nSought point coordinates: x=%d, y=$d, z=%d\n", x, y, z);
+    printf("\nSought point coordinates: x=%d, y=%d, z=%d\n", x, y, z);
 }
 
 int * __sattelite_distanses(int number) {
@@ -44,6 +47,6 @@ int * __sattelite_distanses(int number) {
 void __log(char * message){
     time_t now;
     time(&now);
-    printf("log %s: %s\n", ctime(&now), message);    
+    printf("log %s%s\n", ctime(&now), message);    
     free(message);
 }

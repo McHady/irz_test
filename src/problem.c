@@ -8,9 +8,10 @@
 
 int __is_problem_inited();
 void __problem_solution();
+void __init_defaults();
 
 void problem_solution() {
-    
+    __init_defaults();
     if (__is_problem_inited){
 
         __problem_solution();
@@ -18,7 +19,13 @@ void problem_solution() {
     else throw_exc(&NULL_POINTER_EX);
 }
 
-int is_problem_inited(){
+void __init_defaults() {
+    Point orgn = {0, 0, 0};
+    if (&PROBLEM_INIT.ORIGIN_POINT == NULL) PROBLEM_INIT.ORIGIN_POINT = orgn;
+    if (&PROBLEM_INIT.POINT_NUMBER == NULL) PROBLEM_INIT.POINT_NUMBER = 4;
+}
+
+int __is_problem_inited(){
     return PROBLEM_INIT.point_input_callback != NULL && 
         PROBLEM_INIT.result_callback != NULL &&
         PROBLEM_INIT.satellite_distance_producer != NULL &&
@@ -91,6 +98,7 @@ int __find_coordiante(char coord, int * distances, Point * points) {
     }
 
     char * message = str_format("Found %s about the formula: %s", 60, coord, formula_str);
+    PROBLEM_INIT.logger(message);
     return formula(distances, points);
 }
 

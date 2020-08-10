@@ -36,13 +36,3 @@ void __initialize() {
     
 #endif
 }
-
-int main(void){
-    throw_def_exc();
-    
-    throw_exc(&NULL_POINTER_EX);
-    
-    struct exception ex;
-    build_def_exception(&ex, "custom exception");
-    throw_exc(&ex);
-}

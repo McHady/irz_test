@@ -29,15 +29,15 @@ int main(void) {
 
 void __point_input(int i, double * x, double * y, double * z) {
     printf("Enter %d point coordinates: ", i+1);
-    scanf("%f %f %f", x, y, z);
+    scanf("%lf %lf %lf", x, y, z);
 }
 
 
 void __result_callback(double x, double y, double z) {
-    printf("\nSought point coordinates: x=%f, y=%f, z=%f\n", x, y, z);
+    printf("\nSought point coordinates: x=%lf, y=%lf, z=%lf\n", x, y, z);
 }
 
-int * __sattelite_distanses(int number) {
+double * __sattelite_distanses(int number) {
     double * distances = calloc(number, sizeof(double));
     srand(time(NULL));
     for(int i = 0; i < number; i++){

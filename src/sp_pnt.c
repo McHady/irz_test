@@ -2,14 +2,14 @@
 #include "stdio.h"
 #include "sp_pnt.h"
 
-void build_point(Point * point, int x, int y, int z) {
+void build_point(Point * point, double x, double y, double z) {
 
     point->x = x;
     point->y = y;
     point->z = z;
 }
 
-Point * produce_points(int number, void (* producer) (double, double *, double *, double *)) {
+Point * produce_points(int number, void (* producer) (int, double *, double *, double *)) {
 
     Point * points = calloc(number, sizeof(Point));
 
@@ -23,6 +23,6 @@ Point * produce_points(int number, void (* producer) (double, double *, double *
     return points;          
 }
 
-void expose_point(Point point, void (* callback) (int, int, int)) {
+void expose_point(Point point, void (* callback) (double, double, double)) {
     callback(point.x, point.y, point.z);
 }

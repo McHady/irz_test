@@ -37,20 +37,24 @@ int __is_problem_inited(){
 
 void __log_distances(double *, int);
 void __log_point_preinit();
-double __find_coordiante(char, double *, Point *);
+double __find_coordiante(char);
+
+Point * POINTS;
+double * DISTANCES;
 
 void __problem_solution() {
-    int * distances = PROBLEM_INIT.satellite_distance_producer(PROBLEM_INIT.POINT_NUMBER);
-    __log_distances(distances, PROBLEM_INIT.POINT_NUMBER);
+    DISTANCES = PROBLEM_INIT.satellite_distance_producer(PROBLEM_INIT.POINT_NUMBER);
+    __log_distances(DISTANCES, PROBLEM_INIT.POINT_NUMBER);
 
     __log_point_preinit();
-    Point * points = produce_points(PROBLEM_INIT.POINT_NUMBER, PROBLEM_INIT.point_input_callback);
+    POINTS = produce_points(PROBLEM_INIT.POINT_NUMBER, PROBLEM_INIT.point_input_callback);
     
-    double x = __find_coordiante('x', distances, points);
-    double y = __find_coordiante('y', distances, points);
-    double z = __find_coordiante('z', distances, points);
+    double x = __find_coordiante('x');
+    double y = __find_coordiante('y');
+    double z = __find_coordiante('z');
     PROBLEM_INIT.result_callback(x, y, z);
-    free(points);
+    free(POINTS);
+    free(DISTANCES);
 }
 
 void __log_distances(double * distances, int number) {
@@ -69,17 +73,17 @@ void __log_point_preinit() {
     PROBLEM_INIT.format_logger("Known %d points initialization", PROBLEM_INIT.POINT_NUMBER);
 }
 
-char * X_FORMULA_STR = "x(t)";
-char * Y_FORMULA_STR = "y(t)";
-char * Z_FORMULA_STR = "z(t)";
+char * X_FORMULA_STR = "Xa = (R^2 - 2*Yp1*Ya - 2*Zp1*Za - ρ1^2)/2*Xp1";
+char * Y_FORMULA_STR = "Ya = (Za * (2*Yp2*Zp1-3*Xp2*Yp1*Zp2) - Yp2 * (R^2 - 1) - ρ1^2 * Xp1 * Yp1)/((Xp2*Yp1 - Yp2) * 2*Xp1)";
+char * Z_FORMULA_STR = "Za = (R^2 * (Xp1 - Xp2 - Xp3) - Xp1 * (R^3 + 2*Xp1 + ρ1^2 + ρ2^2 - ρ3^2))/(2*Xp3*Zp1 - 2*Xp1*Zp1 + Xp2*Zp1)";
 
-double X_formula(double * distances, Point * points);
-double Y_formula(double * distances, Point * points);
-double Z_formula(double * distances, Point * points);
+double X_formula();
+double Y_formula();
+double Z_formula();
 
-double __find_coordiante(char coord, double * distances, Point * points) {
+double __find_coordiante(char coord) {
     char * formula_str = NULL;
-    int (* formula) (double *, Point *);
+    double (* formula) ();
 
     switch (coord)
     {
@@ -105,20 +109,46 @@ double __find_coordiante(char coord, double * distances, Point * points) {
     }
 
     PROBLEM_INIT.format_logger("Found %c about the formula: %s", coord, formula_str);
-    return formula(distances, points);
+    return formula();
+}
+
+double x_p(int i) {
+    return POINTS[i].x;
+}
+double y_p(int i) {
+    return POINTS[i].y;
+}
+double z_p(int i) {
+    return POINTS[i].z;
+}
+
+double ro(int i){
+    return DISTANCES[i];
 }
 
 ///формула нахождения X(t)
-double X_formula(double * distances, Point * points) {
-    return (pow(PROBLEM_INIT.SPHERE_RADIUS, 2) - )/2*points[1].x; 
+double X_formula() {
+    double r = PROBLEM_INIT.SPHERE_RADIUS;
+    double numerator = pow(r, 2) - 2 * x_p(1) * Y_formula() - 2 * z_p(1) * Z_formula() - pow(ro(1), 2);
+    return numerator /2*x_p(1); 
 }
 
 ///формула нахождения Y(t)
-double Y_formula(double * distances, Point * points) {
-    return 0;
+double Y_formula() {
+    double r = PROBLEM_INIT.SPHERE_RADIUS;
+    double za_group = Z_formula() * (2 * y_p(2) * z_p(1) - 3 * x_p(2) * z_p(2));
+    double appendix = -1 * y_p(2) * (pow(r, 2) - 1) - pow(ro(1), 2) * x_p(1) * y_p(1);
+    double numenator = za_group + appendix;
+    double denominator = 2 * x_p(1) * (x_p(2) * y_p(1) - y_p(2));
+    return numenator/denominator;
 }
 
 ///формула нахождения Z(t)
-double Z_formula(double * distances, Point * points) {
-    return 0;
+double Z_formula() {
+    double r = PROBLEM_INIT.SPHERE_RADIUS;
+    double r_sqr_grp = pow(r, 2) + (x_p(1) - x_p(2) + x_p(3));
+    double xp1_grp = x_p(1) * (pow(r, 3) + 2 * x_p(1) + pow(ro(1), 2) + pow(ro(2), 2) - pow(ro(3), 2));
+    double numenator = r_sqr_grp - xp1_grp;
+    double denominator = 2 + x_p(3) * z_p(1) - 2 * x_p(1) * z_p(1) + x_p(2) * z_p(1); 
+    return numenator/denominator;
 }

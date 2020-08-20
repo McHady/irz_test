@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __PROBLEM_H
+#define __PROBLEM_H
 #include "sp_pnt.h"
 
 struct {
@@ -13,3 +14,5 @@ struct {
 } PROBLEM_INIT;
 
 void problem_solution();
+
+#endif

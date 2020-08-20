@@ -9,13 +9,13 @@ void build_point(Point * point, int x, int y, int z) {
     point->z = z;
 }
 
-Point * produce_points(int number, void (* producer) (int, int *, int *, int *)) {
+Point * produce_points(int number, void (* producer) (double, double *, double *, double *)) {
 
     Point * points = calloc(number, sizeof(Point));
 
     for(int i = 0; i < number; i++) {
 
-        int x, y, z;
+        double x, y, z;
         producer(i, &x, &y, &z);
         build_point(&points[i], x, y, z);
     }

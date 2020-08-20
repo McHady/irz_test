@@ -3,6 +3,7 @@
 #include "sp_pnt.h"
 #include "str_utils.h"
 #include "stdio.h"
+#include "math.h"
 
 #define false = 0;
 #define true = 1;
@@ -34,9 +35,9 @@ int __is_problem_inited(){
         PROBLEM_INIT.logger != NULL;
 }
 
-void __log_distances(int *, int);
+void __log_distances(double *, int);
 void __log_point_preinit();
-int __find_coordiante(char, int *, Point *);
+double __find_coordiante(char, double *, Point *);
 
 void __problem_solution() {
     int * distances = PROBLEM_INIT.satellite_distance_producer(PROBLEM_INIT.POINT_NUMBER);
@@ -45,20 +46,20 @@ void __problem_solution() {
     __log_point_preinit();
     Point * points = produce_points(PROBLEM_INIT.POINT_NUMBER, PROBLEM_INIT.point_input_callback);
     
-    int x = __find_coordiante('x', distances, points);
-    int y = __find_coordiante('y', distances, points);
-    int z = __find_coordiante('z', distances, points);
+    double x = __find_coordiante('x', distances, points);
+    double y = __find_coordiante('y', distances, points);
+    double z = __find_coordiante('z', distances, points);
     PROBLEM_INIT.result_callback(x, y, z);
     free(points);
 }
 
-void __log_distances(int * distances, int number) {
+void __log_distances(double * distances, int number) {
     /* char * joint_distances = join_int_arr_with_commas(distances, number); */
     PROBLEM_INIT.logger("Point distances: ");
     /* PROBLEM_INIT.logger(joint_distances); */
-    printf("ρ[%d]=%d", 1, distances[0]);
+    printf("ρ[%d]=%f", 1, distances[0]);
     for(int i = 1; i < number; i++) {
-        printf(", ρ[%d]=%d", i+1, distances[i]);
+        printf(", ρ[%d]=%f", i+1, distances[i]);
     }
     printf("\n");
     /*free(joint_distances);*/
@@ -72,13 +73,13 @@ char * X_FORMULA_STR = "x(t)";
 char * Y_FORMULA_STR = "y(t)";
 char * Z_FORMULA_STR = "z(t)";
 
-int X_formula(int * distances, Point * points);
-int Y_formula(int * distances, Point * points);
-int Z_formula(int * distances, Point * points);
+double X_formula(double * distances, Point * points);
+double Y_formula(double * distances, Point * points);
+double Z_formula(double * distances, Point * points);
 
-int __find_coordiante(char coord, int * distances, Point * points) {
+double __find_coordiante(char coord, double * distances, Point * points) {
     char * formula_str = NULL;
-    int (* formula) (int *, Point *);
+    int (* formula) (double *, Point *);
 
     switch (coord)
     {
@@ -108,16 +109,16 @@ int __find_coordiante(char coord, int * distances, Point * points) {
 }
 
 ///формула нахождения X(t)
-int X_formula(int * distances, Point * points) {
-    return 0;
+double X_formula(double * distances, Point * points) {
+    return (pow(PROBLEM_INIT.SPHERE_RADIUS, 2) - )/2*points[1].x; 
 }
 
 ///формула нахождения Y(t)
-int Y_formula(int * distances, Point * points) {
+double Y_formula(double * distances, Point * points) {
     return 0;
 }
 
 ///формула нахождения Z(t)
-int Z_formula(int * distances, Point * points) {
+double Z_formula(double * distances, Point * points) {
     return 0;
 }

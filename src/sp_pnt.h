@@ -1,13 +1,13 @@
 #pragma once
 #include "stdlib.h"
 typedef struct {
-    int x; 
-    int y; 
-    int z;
+    double x; 
+    double y; 
+    double z;
 } Point;
 
-void build_point(Point *, int, int, int);
+void build_point(Point *, double, double, double);
 
-Point * produce_points(int, void (int, int *, int *, int *));
+Point * produce_points(int, void (int, double *, double *, double *));
 
-void expose_point(Point, void (int, int, int)); 
+void expose_point(Point, void (int, double, double)); 
